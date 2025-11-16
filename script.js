@@ -1,5 +1,5 @@
 // Emojis de corazones para el juego
-const heartEmojis = ['❤️', '💕', '💖', '💗', '💓', '💝', '💞', '💟'];
+const heartEmojis = ['💜', '💚', '❤️‍🔥', '🩶', '🩵', '💝', '🧡', '💟'];
 
 // Frases motivadoras para la derrota
 const loseMessages = [
@@ -37,11 +37,12 @@ function createBoard() {
         card.dataset.color = (index % 8) + 1;
         
         card.innerHTML = `
-            <div class="card-front">
-                <div class="rainbow"></div>
-            </div>
-            <div class="card-back">${emoji}</div>
-        `;
+        <div class="card-front">${emoji}</div>
+        <div class="card-back">
+            <div class="rainbow"></div>
+        </div>
+    `;
+   
         
         card.addEventListener('click', () => flipCard(card));
         board.appendChild(card);
