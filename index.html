@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚀 Test de Vercel 🚀</title>
+    <title>Love is in the Air 💕 - Memo Game</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -12,30 +14,210 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Nunito', 'Comic Sans MS', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 25%, #ff9a9e 50%, #fecfef 75%, #fecfef 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            overflow-x: hidden;
         }
 
-        .container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        /* Pantalla de Bienvenida */
+        .welcome-screen {
             text-align: center;
-            max-width: 600px;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        .welcome-screen h1 {
+            font-size: 4em;
+            color: #ff6b9d;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(255, 107, 157, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.5em;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.6);
+        }
+
+        .start-btn:active {
+            transform: translateY(-2px);
+        }
+
+        /* Pantalla del Juego */
+        .game-screen {
+            display: none;
             width: 100%;
+            max-width: 800px;
             animation: fadeIn 0.5s ease-in;
         }
 
-        @keyframes fadeIn {
+        .game-screen.active {
+            display: block;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .game-title {
+            font-size: 2.5em;
+            color: #ff6b9d;
+            margin-bottom: 15px;
+        }
+
+        .game-info {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            border-radius: 20px;
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card.matched {
+            opacity: 0.6;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, 
+                #ff9a9e 0%, 
+                #fecfef 25%, 
+                #fad0c4 50%, 
+                #ffd1ff 75%, 
+                #ff9a9e 100%);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: white;
+            font-size: 3em;
+        }
+
+        /* Arcoíris en el centro de la tarjeta boca abajo */
+        .rainbow {
+            width: 60%;
+            height: 60%;
+            background: linear-gradient(to bottom,
+                #ff6b9d 0%,
+                #ff8fab 16.66%,
+                #ffa8c5 33.33%,
+                #ffc5df 50%,
+                #ffe2f9 66.66%,
+                #ffffff 83.33%,
+                #f0f0f0 100%);
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .rainbow::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 70%;
+            background: white;
+            border-radius: 50%;
+        }
+
+        /* Pop-ups */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .popup-overlay.active {
+            display: flex;
+        }
+
+        .popup {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.5s ease-out;
+            position: relative;
+        }
+
+        @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(50px);
             }
             to {
                 opacity: 1;
@@ -43,119 +225,166 @@
             }
         }
 
-        h1 {
-            font-size: 3em;
+        .popup h2 {
+            font-size: 2.5em;
             margin-bottom: 20px;
-            color: #333;
         }
 
-        .emoji-large {
-            font-size: 4em;
-            margin: 20px 0;
-            animation: bounce 2s infinite;
+        .popup.lose h2 {
+            color: #ff6b9d;
         }
 
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
+        .popup.win h2 {
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(255, 215, 0, 0.3);
+        }
+
+        .popup p {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .popup-btn {
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            transition: transform 0.3s;
+        }
+
+        .popup-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Estrellitas animadas */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .star {
+            position: absolute;
+            font-size: 2em;
+            color: #ffd700;
+            animation: starFall 3s ease-out forwards;
+        }
+
+        @keyframes starFall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg) scale(0);
             }
             50% {
-                transform: translateY(-10px);
+                opacity: 1;
+                transform: translateY(50vh) rotate(180deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(360deg) scale(0);
             }
         }
 
-        .status {
-            background: #10b981;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 50px;
-            display: inline-block;
-            margin: 20px 0;
-            font-size: 1.2em;
-            font-weight: bold;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
-        .info {
-            margin-top: 30px;
-            color: #666;
-            line-height: 1.8;
+        /* Colores pastel para las tarjetas */
+        .card[data-color="1"] .card-front {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+        }
+        .card[data-color="2"] .card-front {
+            background: linear-gradient(135deg, #fad0c4, #ffd1ff);
+        }
+        .card[data-color="3"] .card-front {
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+        }
+        .card[data-color="4"] .card-front {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+        }
+        .card[data-color="5"] .card-front {
+            background: linear-gradient(135deg, #d299c2, #fef9d7);
+        }
+        .card[data-color="6"] .card-front {
+            background: linear-gradient(135deg, #89f7fe, #66a6ff);
+        }
+        .card[data-color="7"] .card-front {
+            background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+        }
+        .card[data-color="8"] .card-front {
+            background: linear-gradient(135deg, #fad961, #f76b1c);
         }
 
-        .links {
-            margin-top: 30px;
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .link-btn {
-            background: #667eea;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: inline-block;
-        }
-
-        .link-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .timestamp {
-            margin-top: 20px;
-            color: #999;
-            font-size: 0.9em;
+        @media (max-width: 600px) {
+            .game-board {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+            
+            .welcome-screen h1 {
+                font-size: 2.5em;
+            }
+            
+            .game-title {
+                font-size: 2em;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎮 Videojuego Interactivo 🎮</h1>
-        <div class="emoji-large">✨</div>
-        <div class="status">✅ ¡Todo funciona perfectamente! ✅</div>
-        
-        <div class="info">
-            <p>🎉 <strong>¡Felicitaciones!</strong> 🎉</p>
-            <p>Tu aplicación está desplegada correctamente en Vercel 🌐</p>
-            <p>El servidor está respondiendo correctamente 🚀</p>
-        </div>
+    <!-- Pantalla de Bienvenida -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <h1>Love is in the Air 💕</h1>
+        <button class="start-btn" onclick="startGame()">Comenzar</button>
+    </div>
 
-        <div class="links">
-            <a href="https://vercel.com" class="link-btn" target="_blank">🔗 Vercel</a>
-            <a href="https://github.com" class="link-btn" target="_blank">💻 GitHub</a>
+    <!-- Pantalla del Juego -->
+    <div class="game-screen" id="gameScreen">
+        <div class="game-header">
+            <h2 class="game-title">Love is in the Air 💕</h2>
+            <div class="game-info">
+                Encuentra todas las parejas de corazones ❤️
+            </div>
         </div>
+        <div class="game-board" id="gameBoard"></div>
+    </div>
 
-        <div class="timestamp">
-            <p>🕐 Última actualización: <span id="timestamp"></span></p>
+    <!-- Pop-up de Derrota -->
+    <div class="popup-overlay" id="losePopup">
+        <div class="popup lose">
+            <h2>💔</h2>
+            <p id="loseMessage"></p>
+            <button class="popup-btn" onclick="restartGame()">Intentar de Nuevo</button>
         </div>
     </div>
 
-    <script>
-        // Mostrar timestamp actual
-        const now = new Date();
-        const timestamp = now.toLocaleString('es-ES', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        });
-        document.getElementById('timestamp').textContent = timestamp;
+    <!-- Pop-up de Victoria -->
+    <div class="popup-overlay" id="winPopup">
+        <div class="popup win">
+            <h2>¡GANASTE! ¡Vas a tener un gran día!</h2>
+            <button class="popup-btn" onclick="restartGame()">Jugar de Nuevo</button>
+        </div>
+    </div>
 
-        // Cambiar emoji cada 2 segundos
-        const emojis = ['✨', '🎮', '🚀', '⭐', '🎯', '💫', '🌟', '🎊'];
-        let currentEmoji = 0;
-        const emojiElement = document.querySelector('.emoji-large');
-        
-        setInterval(() => {
-            currentEmoji = (currentEmoji + 1) % emojis.length;
-            emojiElement.textContent = emojis[currentEmoji];
-        }, 2000);
-    </script>
+    <!-- Contenedor de estrellitas -->
+    <div class="stars-container" id="starsContainer"></div>
+
+    <script src="script.js"></script>
 </body>
 </html>
-
