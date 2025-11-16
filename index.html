@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Test de Vercel 🚀</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .emoji-large {
+            font-size: 4em;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .status {
+            background: #10b981;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            display: inline-block;
+            margin: 20px 0;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .info {
+            margin-top: 30px;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .links {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .link-btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-block;
+        }
+
+        .link-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .timestamp {
+            margin-top: 20px;
+            color: #999;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Videojuego Interactivo 🎮</h1>
+        <div class="emoji-large">✨</div>
+        <div class="status">✅ ¡Todo funciona perfectamente! ✅</div>
+        
+        <div class="info">
+            <p>🎉 <strong>¡Felicitaciones!</strong> 🎉</p>
+            <p>Tu aplicación está desplegada correctamente en Vercel 🌐</p>
+            <p>El servidor está respondiendo correctamente 🚀</p>
+        </div>
+
+        <div class="links">
+            <a href="https://vercel.com" class="link-btn" target="_blank">🔗 Vercel</a>
+            <a href="https://github.com" class="link-btn" target="_blank">💻 GitHub</a>
+        </div>
+
+        <div class="timestamp">
+            <p>🕐 Última actualización: <span id="timestamp"></span></p>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar timestamp actual
+        const now = new Date();
+        const timestamp = now.toLocaleString('es-ES', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        document.getElementById('timestamp').textContent = timestamp;
+
+        // Cambiar emoji cada 2 segundos
+        const emojis = ['✨', '🎮', '🚀', '⭐', '🎯', '💫', '🌟', '🎊'];
+        let currentEmoji = 0;
+        const emojiElement = document.querySelector('.emoji-large');
+        
+        setInterval(() => {
+            currentEmoji = (currentEmoji + 1) % emojis.length;
+            emojiElement.textContent = emojis[currentEmoji];
+        }, 2000);
+    </script>
+</body>
+</html>
+
