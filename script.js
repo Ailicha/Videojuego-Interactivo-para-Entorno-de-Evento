@@ -126,22 +126,23 @@ function checkMatch() {
     const [card1, card2] = flippedCards;
 
     if (card1.dataset.emoji === card2.dataset.emoji) {
-        // Coinciden - las tarjetas quedan permanentemente volteadas y estáticas
+        // Coinciden - las tarjetas quedan permanentemente boca arriba (mostrando corazones) hasta el final del juego
         // Crear estrellitas de éxito
         createMatchStars(card1, card2);
         
-        // Marcar como matched inmediatamente para que queden fuera de juego
+        // Asegurar que ambas tarjetas estén volteadas (boca arriba) mostrando los corazones
+        card1.classList.add('flipped');
+        card2.classList.add('flipped');
+        
+        // Marcar como matched para que queden fuera de juego y permanezcan estáticas
         card1.classList.add('matched');
         card2.classList.add('matched');
         
-        // Asegurar que mantengan la clase flipped para mostrar los corazones permanentemente
-        // (ya deberían tenerla, pero la reforzamos)
-        if (!card1.classList.contains('flipped')) {
-            card1.classList.add('flipped');
-        }
-        if (!card2.classList.contains('flipped')) {
-            card2.classList.add('flipped');
-        }
+        // Aplicar estilos inline para garantizar que queden boca arriba
+        card1.style.transform = 'rotateY(180deg)';
+        card2.style.transform = 'rotateY(180deg)';
+        card1.style.pointerEvents = 'none';
+        card2.style.pointerEvents = 'none';
         
         // Actualizar estado del juego
         matchedPairs++;
@@ -220,7 +221,11 @@ function restartGame() {
     canFlip = true;
     cards = [];
     
-    // Recrear el tablero
+    // Limpiar el tablero anterior completamente
+    const board = document.getElementById('gameBoard');
+    board.innerHTML = '';
+    
+    // Recrear el tablero (todas las tarjetas empezarán boca abajo)
     createBoard();
 }
 

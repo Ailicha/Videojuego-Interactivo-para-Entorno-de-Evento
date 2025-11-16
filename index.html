@@ -132,12 +132,12 @@
             opacity: 0.9;
             cursor: default;
             pointer-events: none;
-            /* Asegurar que queden completamente estáticas */
+            /* Asegurar que queden completamente estáticas y boca arriba (mostrando corazones) */
             transform: rotateY(180deg) !important;
             transition: none;
         }
 
-        /* Asegurar que las tarjetas matched mantengan el estado flipped (corazones visibles) */
+        /* Asegurar que las tarjetas matched mantengan el estado flipped (corazones visibles boca arriba) */
         .card.matched.flipped {
             transform: rotateY(180deg) !important;
             opacity: 0.9;
@@ -147,6 +147,17 @@
         .card.matched:hover {
             transform: rotateY(180deg) !important;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Asegurar que card-front (corazones) se vea cuando la tarjeta está matched y flipped */
+        .card.matched.flipped .card-front {
+            transform: rotateY(0deg) !important;
+            visibility: visible !important;
+        }
+        
+        .card.matched.flipped .card-back {
+            transform: rotateY(180deg) !important;
+            visibility: hidden !important;
         }
 
         .card-front,
