@@ -113,7 +113,7 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .card:hover {
+        .card:hover:not(.matched) {
             transform: scale(1.05);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
@@ -123,9 +123,15 @@
         }
 
         .card.matched {
-            opacity: 0.6;
+            opacity: 0.8;
             cursor: default;
             pointer-events: none;
+        }
+
+        /* Asegurar que las tarjetas matched mantengan el estado flipped (corazones visibles) */
+        .card.matched.flipped {
+            transform: rotateY(180deg);
+            opacity: 0.8;
         }
 
         .card-front,

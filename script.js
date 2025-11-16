@@ -125,9 +125,13 @@ function checkMatch() {
     const [card1, card2] = flippedCards;
 
     if (card1.dataset.emoji === card2.dataset.emoji) {
-        // Coinciden - agregar clase matched y deshabilitar clics
+        // Coinciden - las tarjetas quedan permanentemente volteadas mostrando los corazones
+        // Mantener la clase 'flipped' y agregar 'matched' para que queden fuera de juego
         card1.classList.add('matched');
         card2.classList.add('matched');
+        // Asegurar que mantengan la clase flipped para mostrar los corazones
+        card1.classList.add('flipped');
+        card2.classList.add('flipped');
         
         // Crear estrellitas de éxito que suben y desaparecen
         createMatchStars(card1, card2);
