@@ -126,16 +126,22 @@ function checkMatch() {
     const [card1, card2] = flippedCards;
 
     if (card1.dataset.emoji === card2.dataset.emoji) {
-        // Coinciden - las tarjetas quedan permanentemente volteadas mostrando los corazones
-        // Mantener la clase 'flipped' y agregar 'matched' para que queden fuera de juego
+        // Coinciden - las tarjetas quedan permanentemente volteadas y estáticas
+        // Crear estrellitas de éxito
+        createMatchStars(card1, card2);
+        
+        // Marcar como matched inmediatamente para que queden fuera de juego
         card1.classList.add('matched');
         card2.classList.add('matched');
-        // Asegurar que mantengan la clase flipped para mostrar los corazones
-        card1.classList.add('flipped');
-        card2.classList.add('flipped');
         
-        // Crear estrellitas de éxito que suben y desaparecen
-        createMatchStars(card1, card2);
+        // Asegurar que mantengan la clase flipped para mostrar los corazones permanentemente
+        // (ya deberían tenerla, pero la reforzamos)
+        if (!card1.classList.contains('flipped')) {
+            card1.classList.add('flipped');
+        }
+        if (!card2.classList.contains('flipped')) {
+            card2.classList.add('flipped');
+        }
         
         // Actualizar estado del juego
         matchedPairs++;

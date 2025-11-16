@@ -129,15 +129,24 @@
         }
 
         .card.matched {
-            opacity: 0.8;
+            opacity: 0.9;
             cursor: default;
             pointer-events: none;
+            /* Asegurar que queden completamente estáticas */
+            transform: rotateY(180deg) !important;
+            transition: none;
         }
 
         /* Asegurar que las tarjetas matched mantengan el estado flipped (corazones visibles) */
         .card.matched.flipped {
-            transform: rotateY(180deg);
-            opacity: 0.8;
+            transform: rotateY(180deg) !important;
+            opacity: 0.9;
+        }
+        
+        /* Deshabilitar cualquier efecto hover en tarjetas matched */
+        .card.matched:hover {
+            transform: rotateY(180deg) !important;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .card-front,
