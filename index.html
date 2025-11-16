@@ -281,6 +281,16 @@
             animation: starFall 3s ease-out forwards;
         }
 
+        /* Estrellitas que suben cuando hay un match */
+        .match-star {
+            position: absolute;
+            font-size: 1.5em;
+            color: #ffd700;
+            pointer-events: none;
+            z-index: 100;
+            animation: starRise 1.5s ease-out forwards;
+        }
+
         @keyframes starFall {
             0% {
                 opacity: 1;
@@ -293,6 +303,17 @@
             100% {
                 opacity: 0;
                 transform: translateY(100vh) rotate(360deg) scale(0);
+            }
+        }
+
+        @keyframes starRise {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) rotate(360deg) scale(1.5);
             }
         }
 

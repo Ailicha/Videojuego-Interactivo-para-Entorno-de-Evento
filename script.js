@@ -72,12 +72,55 @@ function flipCard(card) {
     }
 }
 
+// Crear estrellitas cuando hay un match correcto
+function createMatchStars(card1, card2) {
+    // Obtener posiciones de las tarjetas
+    const rect1 = card1.getBoundingClientRect();
+    const rect2 = card2.getBoundingClientRect();
+    
+    // Crear 1 o 2 estrellitas desde cada tarjeta
+    const numStars = Math.random() > 0.5 ? 1 : 2;
+    
+    for (let i = 0; i < numStars; i++) {
+        // Estrellita desde la primera tarjeta
+        const star1 = document.createElement('span');
+        star1.className = 'match-star';
+        star1.textContent = '⭐';
+        star1.style.left = (rect1.left + rect1.width / 2) + 'px';
+        star1.style.top = (rect1.top + rect1.height / 2) + 'px';
+        star1.style.animationDelay = (i * 0.1) + 's';
+        document.body.appendChild(star1);
+        
+        // Remover después de la animación
+        setTimeout(() => {
+            star1.remove();
+        }, 1500);
+        
+        // Estrellita desde la segunda tarjeta
+        const star2 = document.createElement('span');
+        star2.className = 'match-star';
+        star2.textContent = '⭐';
+        star2.style.left = (rect2.left + rect2.width / 2) + 'px';
+        star2.style.top = (rect2.top + rect2.height / 2) + 'px';
+        star2.style.animationDelay = (i * 0.1 + 0.05) + 's';
+        document.body.appendChild(star2);
+        
+        // Remover después de la animación
+        setTimeout(() => {
+            star2.remove();
+        }, 1500);
+    }
+}
+
 // Verificar si las tarjetas coinciden
 function checkMatch() {
     const [card1, card2] = flippedCards;
 
     if (card1.dataset.emoji === card2.dataset.emoji) {
-        // Coinciden
+        // Coinciden - crear estrellitas de éxito
+        createMatchStars(card1, card2);
+        
+        // Las tarjetas se quedan permanentemente volteadas
         setTimeout(() => {
             card1.classList.add('matched');
             card2.classList.add('matched');
@@ -93,7 +136,7 @@ function checkMatch() {
             }
         }, 500);
     } else {
-        // No coinciden
+        // No coinciden - volver a tapar después de 1 segundo
         mistakes++;
         setTimeout(() => {
             card1.classList.remove('flipped');
