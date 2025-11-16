@@ -59,6 +59,10 @@ function shuffleArray(array) {
 
 // Voltear una tarjeta
 function flipCard(card) {
+    // No permitir voltear si:
+    // - No se puede voltear en este momento
+    // - La tarjeta ya está volteada
+    // - La tarjeta ya está emparejada (matched)
     if (!canFlip || card.classList.contains('flipped') || card.classList.contains('matched')) {
         return;
     }
@@ -84,7 +88,7 @@ function createMatchStars(card1, card2) {
     for (let i = 0; i < numStars; i++) {
         // Estrellita desde la primera tarjeta
         const star1 = document.createElement('span');
-        star1.className = 'match-star';
+        star1.className = 'star match-star';
         star1.textContent = '⭐';
         star1.style.left = (rect1.left + rect1.width / 2) + 'px';
         star1.style.top = (rect1.top + rect1.height / 2) + 'px';
@@ -93,12 +97,14 @@ function createMatchStars(card1, card2) {
         
         // Remover después de la animación
         setTimeout(() => {
-            star1.remove();
+            if (star1.parentNode) {
+                star1.remove();
+            }
         }, 1500);
         
         // Estrellita desde la segunda tarjeta
         const star2 = document.createElement('span');
-        star2.className = 'match-star';
+        star2.className = 'star match-star';
         star2.textContent = '⭐';
         star2.style.left = (rect2.left + rect2.width / 2) + 'px';
         star2.style.top = (rect2.top + rect2.height / 2) + 'px';
@@ -107,7 +113,9 @@ function createMatchStars(card1, card2) {
         
         // Remover después de la animación
         setTimeout(() => {
-            star2.remove();
+            if (star2.parentNode) {
+                star2.remove();
+            }
         }, 1500);
     }
 }
@@ -117,24 +125,24 @@ function checkMatch() {
     const [card1, card2] = flippedCards;
 
     if (card1.dataset.emoji === card2.dataset.emoji) {
-        // Coinciden - crear estrellitas de éxito
+        // Coinciden - agregar clase matched y deshabilitar clics
+        card1.classList.add('matched');
+        card2.classList.add('matched');
+        
+        // Crear estrellitas de éxito que suben y desaparecen
         createMatchStars(card1, card2);
         
-        // Las tarjetas se quedan permanentemente volteadas
-        setTimeout(() => {
-            card1.classList.add('matched');
-            card2.classList.add('matched');
-            matchedPairs++;
-            flippedCards = [];
-            canFlip = true;
+        // Actualizar estado del juego
+        matchedPairs++;
+        flippedCards = [];
+        canFlip = true;
 
-            // Verificar victoria
-            if (matchedPairs === heartEmojis.length) {
-                setTimeout(() => {
-                    showWinPopup();
-                }, 500);
-            }
-        }, 500);
+        // Verificar victoria
+        if (matchedPairs === heartEmojis.length) {
+            setTimeout(() => {
+                showWinPopup();
+            }, 500);
+        }
     } else {
         // No coinciden - volver a tapar después de 1 segundo
         mistakes++;
