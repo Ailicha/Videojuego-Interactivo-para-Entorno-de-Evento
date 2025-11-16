@@ -118,8 +118,14 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
+        /* Cuando la tarjeta está volteada, rota 180deg para mostrar card-front */
         .card.flipped {
             transform: rotateY(180deg);
+        }
+        
+        /* Evitar que el hover interfiera con el flip */
+        .card.flipped:hover:not(.matched) {
+            transform: rotateY(180deg) scale(1.05);
         }
 
         .card.matched {
@@ -146,19 +152,31 @@
             align-items: center;
         }
 
-        .card-front {
+        /* Cara trasera (arcoíris) - visible cuando la tarjeta está boca abajo */
+        .card-back {
             background: linear-gradient(135deg, 
                 #ff9a9e 0%, 
                 #fecfef 25%, 
                 #fad0c4 50%, 
                 #ffd1ff 75%, 
                 #ff9a9e 100%);
+            transform: rotateY(0deg);
         }
 
-        .card-back {
-            transform: rotateY(180deg);
+        /* Cara frontal (emoji) - visible cuando la tarjeta está volteada */
+        .card-front {
             background: white;
             font-size: 3em;
+            transform: rotateY(180deg);
+            color: inherit;
+            text-shadow: none;
+            filter: none;
+        }
+        
+        /* Asegurar que los emojis se vean correctamente */
+        .card-front * {
+            filter: none !important;
+            -webkit-filter: none !important;
         }
 
         /* Arcoíris en el centro de la tarjeta boca abajo */
