@@ -14,8 +14,10 @@ let cards = [];
 let flippedCards = [];
 let matchedPairs = 0;
 let mistakes = 0;
-const maxMistakes = 5; // Número máximo de errores permitidos
+let maxMistakes = 5; // Número máximo de errores permitidos (puede cambiar después de perder)
 let canFlip = true;
+let pendingTimeouts = []; // Array para guardar todos los timeouts pendientes
+let lostLastGame = false; // Indica si el jugador perdió en el juego anterior
 
 // Crear el tablero de juego
 function createBoard() {
@@ -151,14 +153,15 @@ function checkMatch() {
 
         // Verificar victoria
         if (matchedPairs === heartEmojis.length) {
-            setTimeout(() => {
+            const timeoutId = setTimeout(() => {
                 showWinPopup();
             }, 500);
+            pendingTimeouts.push(timeoutId);
         }
     } else {
         // No coinciden - volver a tapar después de 1 segundo
         mistakes++;
-        setTimeout(() => {
+        const timeoutId1 = setTimeout(() => {
             card1.classList.remove('flipped');
             card2.classList.remove('flipped');
             flippedCards = [];
@@ -166,16 +169,19 @@ function checkMatch() {
 
             // Verificar derrota
             if (mistakes >= maxMistakes) {
-                setTimeout(() => {
+                const timeoutId2 = setTimeout(() => {
                     showLosePopup();
                 }, 500);
+                pendingTimeouts.push(timeoutId2);
             }
         }, 1000);
+        pendingTimeouts.push(timeoutId1);
     }
 }
 
 // Mostrar pop-up de derrota
 function showLosePopup() {
+    lostLastGame = true; // Marcar que el jugador perdió este juego
     const popup = document.getElementById('losePopup');
     const message = document.getElementById('loseMessage');
     message.textContent = loseMessages[Math.floor(Math.random() * loseMessages.length)];
@@ -184,6 +190,7 @@ function showLosePopup() {
 
 // Mostrar pop-up de victoria con estrellitas
 function showWinPopup() {
+    lostLastGame = false; // Resetear la bandera cuando gana
     createStars();
     const popup = document.getElementById('winPopup');
     popup.classList.add('active');
@@ -209,10 +216,22 @@ function createStars() {
 
 // Reiniciar el juego
 function restartGame() {
+    // Cancelar todos los timeouts pendientes
+    pendingTimeouts.forEach(timeoutId => clearTimeout(timeoutId));
+    pendingTimeouts = [];
+    
     // Ocultar pop-ups
     document.getElementById('losePopup').classList.remove('active');
     document.getElementById('winPopup').classList.remove('active');
     document.getElementById('starsContainer').innerHTML = '';
+    
+    // Si el jugador perdió el juego anterior, darle muchas más oportunidades para ganar
+    if (lostLastGame) {
+        maxMistakes = 50; // Muchas oportunidades para garantizar la victoria
+        lostLastGame = false; // Resetear la bandera
+    } else {
+        maxMistakes = 5; // Volver al valor normal si ganó
+    }
     
     // Resetear variables
     flippedCards = [];
@@ -231,6 +250,9 @@ function restartGame() {
 
 // Iniciar el juego
 function startGame() {
+    // Resetear valores iniciales
+    maxMistakes = 5;
+    lostLastGame = false;
     document.getElementById('welcomeScreen').style.display = 'none';
     document.getElementById('gameScreen').classList.add('active');
     createBoard();
